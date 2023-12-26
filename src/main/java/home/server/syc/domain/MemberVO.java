@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 public class MemberVO {
 
     @Id
-    @Column(name = "MEMBER_ID")
+    @Column(name = "USERNAME")
     private String username;
 
     @Column(name = "PASSWORD")
