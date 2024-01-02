@@ -5,5 +5,5 @@ import home.server.syc.domain.FileVO;
 import java.util.List;
 
 public interface FileService {
-    List<FileVO> readAll() throws Exception;
+    List<FileVO> readFileList() throws Exception;
 }

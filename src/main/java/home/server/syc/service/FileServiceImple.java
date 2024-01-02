@@ -11,38 +11,48 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 @Service
 public class FileServiceImple implements FileService{
     private final Logger logger = LoggerFactory.getLogger(FileServiceImple.class);
-    public List<FileVO> readAll() throws Exception {
-        logger.info("readAll() called");
-        Path dirPath = Paths.get("C:\\Users\\goott3\\Pictures");
-        List<FileVO> fileList;
 
-        try {
-            Collectors Collectors = null;
-            fileList = Files.list(dirPath)
-                    .map(path -> {
-                        // FileVO에 맞게 파일 정보를 매핑
-                        FileVO fileVO = new FileVO();
-                        fileVO.setFileName(path.getFileName().toString());
-                        try {
-                            fileVO.setSize(Files.size(path));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        fileVO.setType(Files.isDirectory(path) ? "Folder" : "File");
-                        // 파일 생성 날짜 등 추가 정보 설정
-                        // ...
-                        return fileVO;
-                    })
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw e;
+    private final Path rootLocation;
+
+    public FileServiceImple() {
+        this.rootLocation = Paths.get("C:\\Users\\goott3\\Pictures");
+    }
+
+    public List<FileVO> readFileList() throws Exception {
+        Path dirPath = rootLocation.resolve(path).normalize().toAbsolutePath();
+        if (!dirPath.startsWith(rootLocation)) {
+            throw new SecurityException("Access is denied");
         }
 
-        return fileList;
+        try (Stream<Path> stream = Files.walk(dirPath, 1)) {
+            return stream
+                    .filter(Files::isRegularFile)
+                    .map(this::pathToFileVO)
+                    .collect(Collectors.toList());
+        }
+
     }
+
+    private FileVO pathToFileVO(Path path) {
+        try {
+            FileVO metaData = new FileVO();
+            metaData.setFileName(path.getFileName().toString());
+            metaData.setType(Files.probeContentType(path));
+            long size = Files.size(path);
+            metaData.setSize(size); // 변경된 메소드 사용
+            metaData.setDate(Files.getLastModifiedTime(path).toString());
+            return metaData;
+        } catch (IOException e) {
+            logger.error("Failed to access file " + path, e);
+            throw new RuntimeException("Failed to access file " + path, e);
+        }
+    }
+    
 }
