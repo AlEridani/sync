@@ -1,6 +1,6 @@
 package home.server.syc.controller;
 
-import home.server.syc.domain.MemberVO;
+import home.server.syc.domain.MemberEntity;
 import home.server.syc.service.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginPost(@ModelAttribute MemberVO vo, Model model) {
+    public String loginPost(@ModelAttribute MemberEntity vo, Model model) {
         logger.info("loginPost() called");
         try{
             service.read(vo);
@@ -43,7 +43,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String registerPost(@ModelAttribute MemberVO vo, Model model) {
+    public String registerPost(@ModelAttribute MemberEntity vo, Model model) {
         logger.info("registerPost() called");
         try{
             service.create(vo);

@@ -1,6 +1,6 @@
 package home.server.syc.dao;
 
-import home.server.syc.domain.MemberVO;
+import home.server.syc.domain.MemberEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,23 +9,23 @@ public class MemberDAOImple implements MemberDAO{
 
 
     @Override
-    public int insertMember(MemberVO vo){
+    public int insertMember(MemberEntity vo){
 
         return 0;
     }
 
     @Override
-    public MemberVO selectMember(String username) {
+    public MemberEntity selectMember(String username) {
         return null;
     }
 
     @Override
-    public int updateMember(MemberVO vo) {
+    public int updateMember(MemberEntity vo) {
         return 0;
     }
 
     @Override
-    public int deleteMember(MemberVO vo) {
+    public int deleteMember(MemberEntity vo) {
         return 0;
     }
 }

@@ -7,8 +7,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.stereotype.Repository;
 
 
 @Data
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @NoArgsConstructor
 @Entity
 @Table(name = "MEMBER")
-public class MemberVO {
+public class MemberEntity {
 
     @Id
     @Column(name = "USERNAME")
